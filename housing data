@@ -1,0 +1,23 @@
+# All of the Libraries that are used
+library(readxl) # Reads the Excel files
+library(ggplot2) # Used for vizualization
+install.packages("corrplot")
+library(corrplot)
+install.packages("car")
+
+# Loading the Data into the system, keeing it as
+df <- read_excel("/content/sample_data/house.xlsx")
+
+# Seeing the first few rows of the data
+head(df)
+
+# Display column names from the dataset
+colnames(df)
+
+
+# Summary of the data
+summary(df)
+
+# check to find "N/A" values or items with no values
+sum(is.na(df))
+# We see that the value is "0" meaning no N/A values
