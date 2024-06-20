@@ -21,3 +21,51 @@ summary(df)
 # check to find "N/A" values or items with no values
 sum(is.na(df))
 # We see that the value is "0" meaning no N/A values
+
+# Provides the relationship between the datapoints
+pairs(df[, c("price", "net_sqm", "age_of_house", "metro_distance")], main = "Pairwise Plot")
+
+# Performing a Correlation Analysis
+
+# Correlation matrix
+correlations <- cor(df[, c("price", "net_sqm", "age_of_house", "metro_distance", "center_distance", "floor", "bedroom_count")], use = "complete.obs")
+
+#Having the data rounded two decimal places
+rounded_correlations <- round(correlations, 2)
+print(rounded_correlations)
+
+# Vizualizing the rounded matrix
+corrplot(rounded_correlations, method = "circle")
+
+# Fitting the linear regression model
+model <- lm(price ~ net_sqm + age_of_house + metro_distance + center_distance + floor + bedroom_count, data=df)
+
+# Summary of the model to check coefficients and statistics
+summary(model)
+
+plot(model)
+
+# check for normality (Shapiro Wilks Test)
+shapiro.test(residuals(model))
+
+library(car)
+# Influence Plot
+influencePlot(model)
+
+# Added Variable Plots
+avPlots(model)
+
+par(mfrow=c(2,2)) # Set up the graphics layout
+
+# Plot the residuals against the fitted values
+plot(model$fitted.values, resid(model),
+     xlab = "Fitted Values", ylab = "Residuals",
+     main = "Residuals vs Fitted")
+abline(h = 0, col = "red") # Adds a horizontal line at 0
+
+# Q-Q plot for normality
+qqnorm(resid(model))
+qqline(resid(model), col = "red") # Adds a reference line
+
+
+
